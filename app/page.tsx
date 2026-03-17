@@ -45,8 +45,8 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col h-screen bg-[#F7F7F5] overflow-hidden font-sans">
       {/* Top Nav */}
-      <header className="bg-white border-b border-gray-100 z-10">
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-4">
+      <header className="absolute top-6 left-0 w-full z-20 px-6 pointer-events-none">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-3 bg-white/95 backdrop-blur-md shadow-lg border border-white/50 rounded-full pointer-events-auto">
           {/* Logo */}
           <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
             <Asterisk className="w-6 h-6 fill-current" />
