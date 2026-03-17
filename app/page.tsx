@@ -8,35 +8,35 @@ import Image from 'next/image';
 
 // Mock data for map markers
 const markers = [
-  { id: 1, lat: -6.8, lng: 107.1, price: "$62.91", name: "Mountain View Villa", location: "Cianjur, West Java", rating: 4.8, beds: 2, guests: 4, image: "https://picsum.photos/seed/villa1/400/300" },
-  { id: 2, lat: -6.9, lng: 106.9, price: "$32.79", name: "Cozy Cabin", location: "Sukabumi, West Java", rating: 4.5, beds: 1, guests: 2, image: "https://picsum.photos/seed/cabin1/400/300" },
-  { id: 3, lat: -6.6, lng: 106.8, price: "$32.09", name: "Forest Retreat", location: "Bogor, West Java", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/forest1/400/300" },
-  { id: 4, lat: -6.7, lng: 106.85, price: "$16.64", name: "Budget Stay", location: "Bogor, West Java", rating: 4.2, beds: 1, guests: 2, image: "https://picsum.photos/seed/budget1/400/300" },
-  { id: 5, lat: -6.75, lng: 106.8, price: "$2.76", name: "Camping Ground", location: "Bogor, West Java", rating: 4.0, beds: 0, guests: 2, image: "https://picsum.photos/seed/camp1/400/300" },
-  { id: 6, lat: -6.85, lng: 106.95, price: "$52.00", name: "Riverside Home", location: "Sukabumi, West Java", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/river1/400/300" },
-  { id: 7, lat: -6.95, lng: 106.85, price: "$91.16", name: "Luxury Estate", location: "Sukabumi, West Java", rating: 5.0, beds: 4, guests: 8, image: "https://picsum.photos/seed/luxury1/400/300" },
-  { id: 8, lat: -7.0, lng: 106.7, price: "$20.84", name: "Beach Hut", location: "Pelabuhan Ratu, West Java", rating: 4.3, beds: 1, guests: 2, image: "https://picsum.photos/seed/beach1/400/300" },
-  { id: 9, lat: -7.05, lng: 106.9, price: "$77.98", name: "Cliffside Villa", location: "Sukabumi, West Java", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/cliff1/400/300" },
-  { id: 10, lat: -6.9, lng: 107.0, price: "$39.69", name: "Farmhouse", location: "Cianjur, West Java", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/farm1/400/300" },
-  { id: 11, lat: -6.85, lng: 107.15, price: "$52.00", name: "Lake View Cabin", location: "Cianjur, West Java", rating: 4.8, beds: 2, guests: 4, image: "https://picsum.photos/seed/lake1/400/300" },
-  { id: 12, lat: -6.75, lng: 107.2, price: "$77.98", name: "Hilltop Retreat", location: "Cianjur, West Java", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/hill1/400/300" },
-  { id: 13, lat: -6.8, lng: 107.3, price: "$66.81", name: "Modern Loft", location: "Padalarang, West Java", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/loft1/400/300" },
-  { id: 14, lat: -6.7, lng: 107.4, price: "$35.44", name: "City Apartment", location: "Cimahi, West Java", rating: 4.5, beds: 1, guests: 2, image: "https://picsum.photos/seed/apt1/400/300" },
-  { id: 15, lat: -6.6, lng: 107.45, price: "$43.48", name: "Suburban Home", location: "Purwakarta, West Java", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/suburb1/400/300" },
-  { id: 16, lat: -6.65, lng: 107.55, price: "$57.00", name: "Garden Villa", location: "Subang, West Java", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/garden1/400/300" },
-  { id: 17, lat: -6.75, lng: 107.5, price: "$98.03", name: "Ocean Breeze Haven", location: "Denpasar, Bali", rating: 5.0, beds: 3, guests: 5, image: "https://picsum.photos/seed/ocean/400/300" },
-  { id: 18, lat: -6.85, lng: 107.4, price: "$18.51", name: "Backpacker Hostel", location: "Padalarang, West Java", rating: 4.1, beds: 1, guests: 1, image: "https://picsum.photos/seed/hostel1/400/300" },
-  { id: 19, lat: -6.95, lng: 107.45, price: "$41.31", name: "Eco Lodge", location: "Soreang, West Java", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/eco1/400/300" },
-  { id: 20, lat: -7.0, lng: 107.5, price: "$23.04", name: "Village Homestay", location: "Ciwidey, West Java", rating: 4.4, beds: 1, guests: 2, image: "https://picsum.photos/seed/village1/400/300" },
-  { id: 21, lat: -7.1, lng: 107.4, price: "$6.59", name: "Tent Stay", location: "Ciwidey, West Java", rating: 4.0, beds: 0, guests: 2, image: "https://picsum.photos/seed/tent1/400/300" },
-  { id: 22, lat: -7.05, lng: 107.45, price: "$94.54", name: "Luxury Glamping", location: "Ciwidey, West Java", rating: 4.9, beds: 2, guests: 4, image: "https://picsum.photos/seed/glamp1/400/300" },
-  { id: 23, lat: -7.15, lng: 107.55, price: "$70.82", name: "Tea Estate Bungalow", location: "Pangalengan, West Java", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/tea1/400/300" },
-  { id: 24, lat: -7.05, lng: 107.6, price: "$19.89", name: "Simple Room", location: "Pangalengan, West Java", rating: 4.2, beds: 1, guests: 2, image: "https://picsum.photos/seed/room1/400/300" },
-  { id: 25, lat: -6.95, lng: 107.65, price: "$54.56", name: "City Center Condo", location: "Bandung, West Java", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/condo1/400/300" },
-  { id: 26, lat: -6.85, lng: 107.7, price: "$63.06", name: "Mountain View Apt", location: "Bandung, West Java", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/apt2/400/300" },
-  { id: 27, lat: -6.75, lng: 107.8, price: "$49.82", name: "Quiet House", location: "Sumedang, West Java", rating: 4.5, beds: 2, guests: 4, image: "https://picsum.photos/seed/house1/400/300" },
-  { id: 28, lat: -6.65, lng: 107.9, price: "$59.30", name: "Traditional Villa", location: "Sumedang, West Java", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/villa2/400/300" },
-  { id: 29, lat: -6.55, lng: 107.7, price: "$15.34", name: "Budget Inn", location: "Subang, West Java", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/inn1/400/300" },
+  { id: 1, lat: 11.5515, lng: 104.9240, price: "$62.91", name: "BKK1 Luxury Condo", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.8, beds: 2, guests: 4, image: "https://picsum.photos/seed/villa1/400/300" },
+  { id: 2, lat: 11.5721, lng: 104.9254, price: "$32.79", name: "Riverside Studio", location: "Daun Penh, Phnom Penh", rating: 4.5, beds: 1, guests: 2, image: "https://picsum.photos/seed/cabin1/400/300" },
+  { id: 3, lat: 11.5404, lng: 104.9150, price: "$32.09", name: "Russian Market Loft", location: "Toul Tom Poung, Phnom Penh", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/forest1/400/300" },
+  { id: 4, lat: 11.5488, lng: 104.9350, price: "$116.64", name: "Bassac Lane Villa", location: "Tonle Bassac, Phnom Penh", rating: 4.2, beds: 1, guests: 2, image: "https://picsum.photos/seed/budget1/400/300" },
+  { id: 5, lat: 11.5714, lng: 104.8950, price: "$42.76", name: "TK Modern House", location: "Tuol Kork, Phnom Penh", rating: 4.0, beds: 2, guests: 4, image: "https://picsum.photos/seed/camp1/400/300" },
+  { id: 6, lat: 11.5950, lng: 104.9300, price: "$52.00", name: "Mekong View Apartment", location: "Chroy Changvar, Phnom Penh", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/river1/400/300" },
+  { id: 7, lat: 11.5500, lng: 104.9400, price: "$91.16", name: "Diamond Island Suite", location: "Koh Pich, Phnom Penh", rating: 5.0, beds: 4, guests: 8, image: "https://picsum.photos/seed/luxury1/400/300" },
+  { id: 8, lat: 11.5620, lng: 104.9160, price: "$20.84", name: "Olympic Stadium View", location: "7 Makara, Phnom Penh", rating: 4.3, beds: 1, guests: 2, image: "https://picsum.photos/seed/beach1/400/300" },
+  { id: 9, lat: 11.5580, lng: 104.9280, price: "$77.98", name: "Independence Monument Penthouse", location: "Daun Penh, Phnom Penh", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/cliff1/400/300" },
+  { id: 10, lat: 11.5350, lng: 104.9200, price: "$39.69", name: "Cozy BKK3 Apartment", location: "Boeung Keng Kang 3, Phnom Penh", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/farm1/400/300" },
+  { id: 11, lat: 11.5680, lng: 104.9200, price: "$52.00", name: "Central Market Stay", location: "Daun Penh, Phnom Penh", rating: 4.8, beds: 2, guests: 4, image: "https://picsum.photos/seed/lake1/400/300" },
+  { id: 12, lat: 11.5800, lng: 104.9100, price: "$27.98", name: "Wat Phnom Retreat", location: "Daun Penh, Phnom Penh", rating: 4.9, beds: 1, guests: 2, image: "https://picsum.photos/seed/hill1/400/300" },
+  { id: 13, lat: 11.5450, lng: 104.9250, price: "$66.81", name: "BKK2 Modern Loft", location: "Boeung Keng Kang 2, Phnom Penh", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/loft1/400/300" },
+  { id: 14, lat: 11.5650, lng: 104.8850, price: "$35.44", name: "Sen Sok City Apartment", location: "Sen Sok, Phnom Penh", rating: 4.5, beds: 1, guests: 2, image: "https://picsum.photos/seed/apt1/400/300" },
+  { id: 15, lat: 11.5300, lng: 104.9300, price: "$43.48", name: "Chbar Ampov Home", location: "Chbar Ampov, Phnom Penh", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/suburb1/400/300" },
+  { id: 16, lat: 11.5850, lng: 104.9000, price: "$57.00", name: "Russey Keo Villa", location: "Russey Keo, Phnom Penh", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/garden1/400/300" },
+  { id: 17, lat: 13.3611, lng: 103.8595, price: "$98.03", name: "Angkor Wat View Resort", location: "Siem Reap, Cambodia", rating: 5.0, beds: 3, guests: 5, image: "https://picsum.photos/seed/ocean/400/300" },
+  { id: 18, lat: 11.5550, lng: 104.9100, price: "$18.51", name: "Backpacker Hostel", location: "7 Makara, Phnom Penh", rating: 4.1, beds: 1, guests: 1, image: "https://picsum.photos/seed/hostel1/400/300" },
+  { id: 19, lat: 10.6104, lng: 104.1815, price: "$41.31", name: "River Lodge", location: "Kampot, Cambodia", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/eco1/400/300" },
+  { id: 20, lat: 10.4820, lng: 104.3160, price: "$83.04", name: "Crab Market Villa", location: "Kep, Cambodia", rating: 4.4, beds: 2, guests: 4, image: "https://picsum.photos/seed/village1/400/300" },
+  { id: 21, lat: 11.5200, lng: 104.9400, price: "$26.59", name: "Mekong Island Stay", location: "Koh Dach, Phnom Penh", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/tent1/400/300" },
+  { id: 22, lat: 11.5750, lng: 104.9350, price: "$94.54", name: "Luxury Riverfront", location: "Chroy Changvar, Phnom Penh", rating: 4.9, beds: 2, guests: 4, image: "https://picsum.photos/seed/glamp1/400/300" },
+  { id: 23, lat: 11.5420, lng: 104.9220, price: "$70.82", name: "BKK1 Boutique Hotel", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/tea1/400/300" },
+  { id: 24, lat: 11.5600, lng: 104.9300, price: "$19.89", name: "Simple Room Riverside", location: "Daun Penh, Phnom Penh", rating: 4.2, beds: 1, guests: 2, image: "https://picsum.photos/seed/room1/400/300" },
+  { id: 25, lat: 11.5530, lng: 104.9260, price: "$54.56", name: "City Center Condo", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/condo1/400/300" },
+  { id: 26, lat: 11.5480, lng: 104.9180, price: "$63.06", name: "TTP View Apt", location: "Toul Tom Poung, Phnom Penh", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/apt2/400/300" },
+  { id: 27, lat: 11.5650, lng: 104.9150, price: "$49.82", name: "Quiet House", location: "7 Makara, Phnom Penh", rating: 4.5, beds: 2, guests: 4, image: "https://picsum.photos/seed/house1/400/300" },
+  { id: 28, lat: 11.5380, lng: 104.9280, price: "$59.30", name: "Traditional Villa", location: "Tonle Bassac, Phnom Penh", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/villa2/400/300" },
+  { id: 29, lat: 11.5780, lng: 104.9220, price: "$15.34", name: "Budget Inn", location: "Daun Penh, Phnom Penh", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/inn1/400/300" },
 ];
 
 export default function Dashboard() {
@@ -112,9 +112,9 @@ export default function Dashboard() {
         <div className="flex-1 w-full relative">
           <Map
             initialViewState={{
-              longitude: 107.2,
-              latitude: -6.8,
-              zoom: 9.5
+              longitude: 104.9282,
+              latitude: 11.5564,
+              zoom: 13
             }}
             mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
             attributionControl={false}
@@ -226,10 +226,10 @@ export default function Dashboard() {
                 {/* Board Items */}
                 <div className="flex flex-col gap-2 group cursor-pointer">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                    <Image src="https://picsum.photos/seed/bali/200/150" alt="Bali" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                    <Image src="https://picsum.photos/seed/kampot/200/150" alt="Kampot" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Bali dreaming</h4>
+                    <h4 className="text-xs font-semibold text-gray-900 truncate">Kampot Retreat</h4>
                     <div className="flex items-center justify-between mt-0.5">
                       <span className="text-[10px] text-gray-500">124 Saved</span>
                       <button className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
@@ -240,10 +240,10 @@ export default function Dashboard() {
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                    <Image src="https://picsum.photos/seed/tucan/200/150" alt="Tucan" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                    <Image src="https://picsum.photos/seed/kep/200/150" alt="Kep" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Tucan Villa</h4>
+                    <h4 className="text-xs font-semibold text-gray-900 truncate">Kep Villas</h4>
                     <div className="flex items-center justify-between mt-0.5">
                       <span className="text-[10px] text-gray-500">109 Saved</span>
                       <button className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
@@ -254,10 +254,10 @@ export default function Dashboard() {
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                    <Image src="https://picsum.photos/seed/aspen/200/150" alt="Aspen" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                    <Image src="https://picsum.photos/seed/siemreap/200/150" alt="Siem Reap" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Aspen Getaway</h4>
+                    <h4 className="text-xs font-semibold text-gray-900 truncate">Siem Reap Stay</h4>
                     <div className="flex items-center justify-between mt-0.5">
                       <span className="text-[10px] text-gray-500">78 Saved</span>
                       <button className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
@@ -295,29 +295,29 @@ export default function Dashboard() {
                 {/* Trending Items */}
                 <div className="flex flex-col gap-2 group cursor-pointer">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                    <Image src="https://picsum.photos/seed/sunset/200/150" alt="Sunset" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                    <Image src="https://picsum.photos/seed/angkor/200/150" alt="Angkor Wat" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Sunset Coastline</h4>
-                    <span className="text-[10px] text-gray-500 truncate block">Dubrovnik, Croatia</span>
+                    <h4 className="text-xs font-semibold text-gray-900 truncate">Angkor Wat</h4>
+                    <span className="text-[10px] text-gray-500 truncate block">Siem Reap, Cambodia</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                    <Image src="https://picsum.photos/seed/lake/200/150" alt="Lake" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                    <Image src="https://picsum.photos/seed/kohrong/200/150" alt="Koh Rong" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Lakeside Modern</h4>
-                    <span className="text-[10px] text-gray-500 truncate block">Lake Como, Italy</span>
+                    <h4 className="text-xs font-semibold text-gray-900 truncate">Island Beaches</h4>
+                    <span className="text-[10px] text-gray-500 truncate block">Koh Rong, Cambodia</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
-                    <Image src="https://picsum.photos/seed/beach/200/150" alt="Beach" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                    <Image src="https://picsum.photos/seed/mondulkiri/200/150" alt="Mondulkiri" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Beachfront</h4>
-                    <span className="text-[10px] text-gray-500 truncate block">Phuket, Thailand</span>
+                    <h4 className="text-xs font-semibold text-gray-900 truncate">Rolling Hills</h4>
+                    <span className="text-[10px] text-gray-500 truncate block">Mondulkiri, Cambodia</span>
                   </div>
                 </div>
               </div>
