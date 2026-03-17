@@ -65,7 +65,7 @@ export default function Dashboard() {
     <div className={`flex flex-col h-screen overflow-hidden font-sans transition-colors duration-500 ${isDark ? 'bg-gray-900' : 'bg-[#F7F7F5]'}`}>
       {/* Top Nav */}
       <header className="absolute top-6 left-0 w-full z-20 px-6 pointer-events-none">
-        <div className={`max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-3 backdrop-blur-md shadow-lg rounded-full pointer-events-auto transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border border-gray-700' : 'bg-white/95 border border-white/50'}`}>
+        <div className={`max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-1.5 backdrop-blur-md shadow-lg rounded-full pointer-events-auto transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border border-gray-700' : 'bg-white/95 border border-white/50'}`}>
           {/* Logo */}
           <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
             <Asterisk className="w-6 h-6 fill-current" />
@@ -79,7 +79,7 @@ export default function Dashboard() {
               <input 
                 type="text" 
                 placeholder="Search a vibe, location, or paste image link..." 
-                className={`w-full pl-11 pr-12 py-2.5 bg-transparent text-sm focus:outline-none transition-colors duration-500 ${isDark ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-500'}`}
+                className={`w-full pl-11 pr-12 py-2 bg-transparent text-sm focus:outline-none transition-colors duration-500 ${isDark ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-500'}`}
               />
               <button className={`absolute right-2 p-1.5 rounded-full border transition-colors duration-500 ${isDark ? 'bg-gray-700 border-gray-600 hover:bg-gray-600' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
                 <SlidersHorizontal className={`w-3.5 h-3.5 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
