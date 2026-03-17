@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import Map, { Marker, Popup } from 'react-map-gl/maplibre';
+import React, { useState, useRef } from 'react';
+import Map, { Marker, Popup, MapRef } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk } from 'lucide-react';
 import Image from 'next/image';
@@ -41,6 +41,15 @@ const markers = [
 
 export default function Dashboard() {
   const [selectedMarker, setSelectedMarker] = useState<typeof markers[0] | null>(null);
+  const mapRef = useRef<MapRef>(null);
+
+  const handleZoomIn = () => {
+    mapRef.current?.zoomIn({ duration: 500 });
+  };
+
+  const handleZoomOut = () => {
+    mapRef.current?.zoomOut({ duration: 500 });
+  };
 
   return (
     <div className="flex flex-col h-screen bg-[#F7F7F5] overflow-hidden font-sans">
@@ -87,6 +96,7 @@ export default function Dashboard() {
         {/* Map Container */}
         <div className="flex-1 w-full relative">
           <Map
+            ref={mapRef}
             initialViewState={{
               longitude: 104.9282,
               latitude: 11.5564,
@@ -94,6 +104,10 @@ export default function Dashboard() {
             }}
             mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
             attributionControl={false}
+            scrollZoom={true}
+            dragPan={true}
+            dragRotate={true}
+            touchZoomRotate={true}
           >
             {/* Markers */}
             {markers.map(marker => (
@@ -102,6 +116,12 @@ export default function Dashboard() {
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedMarker(marker);
+                    mapRef.current?.flyTo({
+                      center: [marker.lng, marker.lat],
+                      zoom: 15,
+                      duration: 1200,
+                      essential: true
+                    });
                   }}
                   className={`px-3 py-1.5 rounded-full shadow-md text-sm font-bold border transition-transform ${
                     selectedMarker?.id === marker.id 
@@ -172,10 +192,16 @@ export default function Dashboard() {
               <Layers className="w-5 h-5 text-gray-700" />
             </button>
             <div className="flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mt-2">
-              <button className="p-2.5 hover:bg-gray-50 transition-colors border-b border-gray-100">
+              <button 
+                onClick={handleZoomIn}
+                className="p-2.5 hover:bg-gray-50 transition-colors border-b border-gray-100"
+              >
                 <Plus className="w-5 h-5 text-gray-700" />
               </button>
-              <button className="p-2.5 hover:bg-gray-50 transition-colors">
+              <button 
+                onClick={handleZoomOut}
+                className="p-2.5 hover:bg-gray-50 transition-colors"
+              >
                 <Minus className="w-5 h-5 text-gray-700" />
               </button>
             </div>
