@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Map, { Marker, Popup, MapRef } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk } from 'lucide-react';
+import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
 // Mock data for map markers
@@ -49,15 +49,18 @@ export default function Dashboard() {
   const [selectedMarker, setSelectedMarker] = useState<typeof markers[0] | null>(null);
   const [mapStyle, setMapStyle] = useState(mapStyles[0].url);
   const [showLayerMenu, setShowLayerMenu] = useState(false);
+  const [isMapLoading, setIsMapLoading] = useState(true);
   const mapRef = useRef<MapRef>(null);
 
   const isDark = mapStyle === mapStyles[2].url;
 
   const handleZoomIn = () => {
+    setIsMapLoading(true);
     mapRef.current?.zoomIn({ duration: 500 });
   };
 
   const handleZoomOut = () => {
+    setIsMapLoading(true);
     mapRef.current?.zoomOut({ duration: 500 });
   };
 
@@ -105,6 +108,16 @@ export default function Dashboard() {
       <main className="flex-1 relative flex flex-col">
         {/* Map Container */}
         <div className="flex-1 w-full relative">
+          {/* Loading Indicator */}
+          <div 
+            className={`absolute top-24 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border flex items-center gap-2 text-sm font-medium z-20 transition-all duration-500 ${
+              isMapLoading ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+            } ${isDark ? 'bg-gray-900/90 border-white/10 text-gray-300' : 'bg-white/90 border-black/5 text-gray-600'} backdrop-blur-md`}
+          >
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span>Updating map...</span>
+          </div>
+
           <Map
             ref={mapRef}
             initialViewState={{
@@ -118,6 +131,9 @@ export default function Dashboard() {
             dragPan={true}
             dragRotate={true}
             touchZoomRotate={true}
+            onZoomStart={() => setIsMapLoading(true)}
+            onIdle={() => setIsMapLoading(false)}
+            onLoad={() => setIsMapLoading(false)}
           >
             {/* Markers */}
             {markers.map(marker => (
@@ -126,6 +142,7 @@ export default function Dashboard() {
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedMarker(marker);
+                    setIsMapLoading(true);
                     mapRef.current?.flyTo({
                       center: [marker.lng, marker.lat],
                       zoom: 15,
@@ -153,7 +170,7 @@ export default function Dashboard() {
                 offset={30}
                 onClose={() => setSelectedMarker(null)}
                 closeButton={false}
-                className={`z-20 ${isDark ? 'dark-popup' : ''}`}
+                className={isDark ? 'z-20 dark-popup' : 'z-20'}
                 maxWidth="300px"
               >
                 <div className={`rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] overflow-hidden w-64 border transition-colors duration-500 ${isDark ? 'bg-gray-900 border-white/10' : 'bg-white border-black/5'}`}>
@@ -216,6 +233,7 @@ export default function Dashboard() {
                     <button
                       key={style.id}
                       onClick={() => {
+                        setIsMapLoading(true);
                         setMapStyle(style.url);
                         setShowLayerMenu(false);
                       }}
