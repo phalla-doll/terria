@@ -39,9 +39,19 @@ const markers = [
   { id: 29, lat: 11.5780, lng: 104.9220, price: "$15.34", name: "Budget Inn", location: "Daun Penh, Phnom Penh", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/inn1/400/300" },
 ];
 
+const mapStyles = [
+  { id: 'voyager', name: 'Streets', url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json' },
+  { id: 'positron', name: 'Light', url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json' },
+  { id: 'dark-matter', name: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' }
+];
+
 export default function Dashboard() {
   const [selectedMarker, setSelectedMarker] = useState<typeof markers[0] | null>(null);
+  const [mapStyle, setMapStyle] = useState(mapStyles[0].url);
+  const [showLayerMenu, setShowLayerMenu] = useState(false);
   const mapRef = useRef<MapRef>(null);
+
+  const isDark = mapStyle === mapStyles[2].url;
 
   const handleZoomIn = () => {
     mapRef.current?.zoomIn({ duration: 500 });
@@ -52,40 +62,40 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#F7F7F5] overflow-hidden font-sans">
+    <div className={`flex flex-col h-screen overflow-hidden font-sans transition-colors duration-500 ${isDark ? 'bg-gray-900' : 'bg-[#F7F7F5]'}`}>
       {/* Top Nav */}
       <header className="absolute top-6 left-0 w-full z-20 px-6 pointer-events-none">
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-3 bg-white/95 backdrop-blur-md shadow-lg border border-white/50 rounded-full pointer-events-auto">
+        <div className={`max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-3 backdrop-blur-md shadow-lg rounded-full pointer-events-auto transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border border-gray-700' : 'bg-white/95 border border-white/50'}`}>
           {/* Logo */}
           <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
             <Asterisk className="w-6 h-6 fill-current" />
-            <span className="text-gray-900">Terria</span>
+            <span className={`transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Terria</span>
           </div>
 
           {/* Refined Search */}
           <div className="flex-1 max-w-2xl mx-8 hidden md:block">
-            <div className="relative flex items-center w-full bg-gray-100 rounded-full border border-transparent focus-within:bg-white focus-within:border-gray-200 focus-within:shadow-sm transition-all">
-              <Search className="w-4 h-4 absolute left-4 text-gray-400" />
+            <div className={`relative flex items-center w-full rounded-full border transition-all duration-500 ${isDark ? 'bg-gray-800 border-gray-700 focus-within:bg-gray-800 focus-within:border-gray-600' : 'bg-gray-100 border-transparent focus-within:bg-white focus-within:border-gray-200 focus-within:shadow-sm'}`}>
+              <Search className={`w-4 h-4 absolute left-4 ${isDark ? 'text-gray-400' : 'text-gray-400'}`} />
               <input 
                 type="text" 
                 placeholder="Search a vibe, location, or paste image link..." 
-                className="w-full pl-11 pr-12 py-2.5 bg-transparent text-sm focus:outline-none text-gray-900 placeholder-gray-500"
+                className={`w-full pl-11 pr-12 py-2.5 bg-transparent text-sm focus:outline-none transition-colors duration-500 ${isDark ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-500'}`}
               />
-              <button className="absolute right-2 p-1.5 bg-white rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-gray-600" />
+              <button className={`absolute right-2 p-1.5 rounded-full border transition-colors duration-500 ${isDark ? 'bg-gray-700 border-gray-600 hover:bg-gray-600' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
+                <SlidersHorizontal className={`w-3.5 h-3.5 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
               </button>
             </div>
           </div>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors relative">
+            <button className={`p-2 rounded-full transition-colors relative ${isDark ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}>
               <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+              <span className={`absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 ${isDark ? 'border-gray-900' : 'border-white'}`}></span>
             </button>
-            <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
+            <div className={`flex items-center gap-2 pl-2 border-l transition-colors duration-500 ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
               <Image src="https://picsum.photos/seed/avatar/32/32" alt="Avatar" width={32} height={32} className="rounded-full" referrerPolicy="no-referrer" />
-              <span className="text-sm font-medium hidden sm:block">Alfikri Djati</span>
+              <span className={`text-sm font-medium hidden sm:block transition-colors duration-500 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>Alfikri Djati</span>
             </div>
           </div>
         </div>
@@ -102,7 +112,7 @@ export default function Dashboard() {
               latitude: 11.5564,
               zoom: 13
             }}
-            mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+            mapStyle={mapStyle}
             attributionControl={false}
             scrollZoom={true}
             dragPan={true}
@@ -123,10 +133,10 @@ export default function Dashboard() {
                       essential: true
                     });
                   }}
-                  className={`px-3 py-1.5 rounded-full shadow-md text-sm font-bold border transition-transform ${
+                  className={`px-3 py-1.5 rounded-full shadow-md text-sm font-bold border transition-all duration-500 ${
                     selectedMarker?.id === marker.id 
-                      ? 'bg-gray-900 text-white border-gray-900 scale-110 z-10 relative' 
-                      : 'bg-white text-gray-900 border-gray-200 hover:scale-105'
+                      ? (isDark ? 'bg-white text-gray-900 border-white scale-110 z-10 relative' : 'bg-gray-900 text-white border-gray-900 scale-110 z-10 relative')
+                      : (isDark ? 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700 hover:scale-105' : 'bg-white text-gray-900 border-gray-200 hover:scale-105')
                   }`}
                 >
                   {marker.price}
@@ -143,42 +153,42 @@ export default function Dashboard() {
                 offset={30}
                 onClose={() => setSelectedMarker(null)}
                 closeButton={false}
-                className="z-20"
+                className={`z-20 ${isDark ? 'dark-popup' : ''}`}
                 maxWidth="300px"
               >
-                <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-64 border border-gray-100">
+                <div className={`rounded-2xl shadow-xl overflow-hidden w-64 border transition-colors duration-500 ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100'}`}>
                   <div className="relative h-40 w-full">
                     <Image src={selectedMarker.image} alt={selectedMarker.name} fill className="object-cover" referrerPolicy="no-referrer" />
                     <button 
-                      className="absolute top-3 right-3 p-1.5 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors z-10"
+                      className={`absolute top-3 right-3 p-1.5 backdrop-blur-sm rounded-full transition-colors z-10 ${isDark ? 'bg-gray-900/80 hover:bg-gray-900 text-gray-300' : 'bg-white/80 hover:bg-white text-gray-700'}`}
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedMarker(null);
                       }}
                     >
-                      <X className="w-4 h-4 text-gray-700" />
+                      <X className="w-4 h-4" />
                     </button>
-                    <button className="absolute top-3 right-10 p-1.5 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors z-10">
-                      <Heart className="w-4 h-4 text-gray-700" />
+                    <button className={`absolute top-3 right-10 p-1.5 backdrop-blur-sm rounded-full transition-colors z-10 ${isDark ? 'bg-gray-900/80 hover:bg-gray-900 text-gray-300' : 'bg-white/80 hover:bg-white text-gray-700'}`}>
+                      <Heart className="w-4 h-4" />
                     </button>
                     <div className="absolute bottom-3 left-3 flex gap-2 z-10">
-                      <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+                      <div className={`flex items-center gap-1 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium transition-colors duration-500 ${isDark ? 'bg-gray-900/90 text-gray-300' : 'bg-white/90 text-gray-700'}`}>
                         <Users className="w-3 h-3" /> {selectedMarker.guests}
                       </div>
-                      <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+                      <div className={`flex items-center gap-1 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium transition-colors duration-500 ${isDark ? 'bg-gray-900/90 text-gray-300' : 'bg-white/90 text-gray-700'}`}>
                         <BedDouble className="w-3 h-3" /> {selectedMarker.beds}
                       </div>
-                      <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+                      <div className={`flex items-center gap-1 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium transition-colors duration-500 ${isDark ? 'bg-gray-900/90 text-gray-300' : 'bg-white/90 text-gray-700'}`}>
                         <Star className="w-3 h-3" /> {selectedMarker.rating}
                       </div>
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 truncate">{selectedMarker.name}</h3>
-                    <p className="text-sm text-gray-500 truncate">{selectedMarker.location}</p>
+                    <h3 className={`font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>{selectedMarker.name}</h3>
+                    <p className={`text-sm truncate transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{selectedMarker.location}</p>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="font-bold text-gray-900">{selectedMarker.price}</span>
-                      <span className="text-sm text-gray-500">/ night</span>
+                      <span className={`font-bold transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>{selectedMarker.price}</span>
+                      <span className={`text-sm transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>/ night</span>
                     </div>
                   </div>
                 </div>
@@ -188,21 +198,51 @@ export default function Dashboard() {
 
           {/* Map Controls (Right) */}
           <div className="absolute top-24 right-6 flex flex-col gap-2 z-10">
-            <button className="p-2.5 bg-white rounded-xl shadow-md border border-gray-100 hover:bg-gray-50 transition-colors">
-              <Layers className="w-5 h-5 text-gray-700" />
-            </button>
-            <div className="flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mt-2">
+            <div className="relative">
+              <button 
+                onClick={() => setShowLayerMenu(!showLayerMenu)}
+                className={`p-2.5 rounded-xl shadow-md border transition-colors duration-500 ${
+                  isDark 
+                    ? (showLayerMenu ? 'bg-gray-800 border-gray-600' : 'bg-gray-900 border-gray-700 hover:bg-gray-800') 
+                    : (showLayerMenu ? 'bg-gray-50 border-gray-300' : 'bg-white border-gray-100 hover:bg-gray-50')
+                }`}
+              >
+                <Layers className={`w-5 h-5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`} />
+              </button>
+              
+              {showLayerMenu && (
+                <div className={`absolute top-0 right-14 rounded-xl shadow-lg border overflow-hidden w-32 z-20 transition-colors duration-500 ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100'}`}>
+                  {mapStyles.map((style) => (
+                    <button
+                      key={style.id}
+                      onClick={() => {
+                        setMapStyle(style.url);
+                        setShowLayerMenu(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors duration-500 ${
+                        mapStyle === style.url 
+                          ? (isDark ? 'font-semibold text-red-400 bg-red-900/30' : 'font-semibold text-red-500 bg-red-50/50') 
+                          : (isDark ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-50')
+                      }`}
+                    >
+                      {style.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className={`flex flex-col rounded-xl shadow-md border overflow-hidden mt-2 transition-colors duration-500 ${isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100'}`}>
               <button 
                 onClick={handleZoomIn}
-                className="p-2.5 hover:bg-gray-50 transition-colors border-b border-gray-100"
+                className={`p-2.5 transition-colors border-b ${isDark ? 'hover:bg-gray-800 border-gray-700' : 'hover:bg-gray-50 border-gray-100'}`}
               >
-                <Plus className="w-5 h-5 text-gray-700" />
+                <Plus className={`w-5 h-5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`} />
               </button>
               <button 
                 onClick={handleZoomOut}
-                className="p-2.5 hover:bg-gray-50 transition-colors"
+                className={`p-2.5 transition-colors ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}`}
               >
-                <Minus className="w-5 h-5 text-gray-700" />
+                <Minus className={`w-5 h-5 ${isDark ? 'text-gray-300' : 'text-gray-700'}`} />
               </button>
             </div>
           </div>
@@ -212,13 +252,13 @@ export default function Dashboard() {
         <div className="absolute bottom-6 left-0 w-full px-6 z-10 pointer-events-none">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto pointer-events-auto">
             {/* You Board */}
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-lg border border-white/50">
+            <div className={`backdrop-blur-md rounded-3xl p-5 shadow-lg border transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border-gray-700' : 'bg-white/95 border-white/50'}`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 border-2 border-gray-300 rounded-md flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 bg-gray-300 rounded-sm"></div>
+                  <div className={`w-5 h-5 border-2 rounded-md flex items-center justify-center transition-colors duration-500 ${isDark ? 'border-gray-600' : 'border-gray-300'}`}>
+                    <div className={`w-2.5 h-2.5 rounded-sm transition-colors duration-500 ${isDark ? 'bg-gray-600' : 'bg-gray-300'}`}></div>
                   </div>
-                  <h3 className="font-semibold text-gray-900">You Board</h3>
+                  <h3 className={`font-semibold transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>You Board</h3>
                 </div>
                 <a href="#" className="text-xs font-medium text-red-500 hover:text-red-600 flex items-center gap-1">
                   View all &rarr;
@@ -227,43 +267,43 @@ export default function Dashboard() {
               <div className="grid grid-cols-3 gap-3">
                 {/* Board Items */}
                 <div className="flex flex-col gap-2 group cursor-pointer">
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                  <div className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-colors duration-500 ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                     <Image src="https://picsum.photos/seed/kampot/200/150" alt="Kampot" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Kampot Retreat</h4>
+                    <h4 className={`text-xs font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Kampot Retreat</h4>
                     <div className="flex items-center justify-between mt-0.5">
-                      <span className="text-[10px] text-gray-500">124 Saved</span>
-                      <button className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                        <Plus className="w-3 h-3 text-gray-600" />
+                      <span className={`text-[10px] transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>124 Saved</span>
+                      <button className={`w-4 h-4 flex items-center justify-center rounded-full transition-colors duration-500 ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}>
+                        <Plus className={`w-3 h-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
                       </button>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                  <div className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-colors duration-500 ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                     <Image src="https://picsum.photos/seed/kep/200/150" alt="Kep" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Kep Villas</h4>
+                    <h4 className={`text-xs font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Kep Villas</h4>
                     <div className="flex items-center justify-between mt-0.5">
-                      <span className="text-[10px] text-gray-500">109 Saved</span>
-                      <button className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                        <Plus className="w-3 h-3 text-gray-600" />
+                      <span className={`text-[10px] transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>109 Saved</span>
+                      <button className={`w-4 h-4 flex items-center justify-center rounded-full transition-colors duration-500 ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}>
+                        <Plus className={`w-3 h-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
                       </button>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                  <div className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-colors duration-500 ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                     <Image src="https://picsum.photos/seed/siemreap/200/150" alt="Siem Reap" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Siem Reap Stay</h4>
+                    <h4 className={`text-xs font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Siem Reap Stay</h4>
                     <div className="flex items-center justify-between mt-0.5">
-                      <span className="text-[10px] text-gray-500">78 Saved</span>
-                      <button className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                        <Plus className="w-3 h-3 text-gray-600" />
+                      <span className={`text-[10px] transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>78 Saved</span>
+                      <button className={`w-4 h-4 flex items-center justify-center rounded-full transition-colors duration-500 ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}>
+                        <Plus className={`w-3 h-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`} />
                       </button>
                     </div>
                   </div>
@@ -272,9 +312,9 @@ export default function Dashboard() {
             </div>
 
             {/* Create a Moodboard */}
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-lg border border-white/50 flex flex-col items-center justify-center text-center">
-              <h3 className="font-bold text-lg text-gray-900 mb-2">Create a Moodboard</h3>
-              <p className="text-sm text-gray-500 mb-6 max-w-xs">
+            <div className={`backdrop-blur-md rounded-3xl p-6 shadow-lg border flex flex-col items-center justify-center text-center transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border-gray-700' : 'bg-white/95 border-white/50'}`}>
+              <h3 className={`font-bold text-lg mb-2 transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Create a Moodboard</h3>
+              <p className={`text-sm mb-6 max-w-xs transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                 Plan and share your future travel dreams. Use a template or start from scratch.
               </p>
               <button className="w-12 h-12 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-md shadow-red-500/30 transition-transform hover:scale-105">
@@ -283,11 +323,11 @@ export default function Dashboard() {
             </div>
 
             {/* Trending Destinations */}
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-lg border border-white/50">
+            <div className={`backdrop-blur-md rounded-3xl p-5 shadow-lg border transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border-gray-700' : 'bg-white/95 border-white/50'}`}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Asterisk className="w-4 h-4 text-gray-400" />
-                  <h3 className="font-semibold text-gray-900">Trending Destinations</h3>
+                  <Asterisk className={`w-4 h-4 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
+                  <h3 className={`font-semibold transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Trending Destinations</h3>
                 </div>
                 <a href="#" className="text-xs font-medium text-red-500 hover:text-red-600 flex items-center gap-1">
                   See all &rarr;
@@ -296,30 +336,30 @@ export default function Dashboard() {
               <div className="grid grid-cols-3 gap-3">
                 {/* Trending Items */}
                 <div className="flex flex-col gap-2 group cursor-pointer">
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                  <div className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-colors duration-500 ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                     <Image src="https://picsum.photos/seed/angkor/200/150" alt="Angkor Wat" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Angkor Wat</h4>
-                    <span className="text-[10px] text-gray-500 truncate block">Siem Reap, Cambodia</span>
+                    <h4 className={`text-xs font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Angkor Wat</h4>
+                    <span className={`text-[10px] truncate block transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Siem Reap, Cambodia</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                  <div className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-colors duration-500 ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                     <Image src="https://picsum.photos/seed/kohrong/200/150" alt="Koh Rong" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Island Beaches</h4>
-                    <span className="text-[10px] text-gray-500 truncate block">Koh Rong, Cambodia</span>
+                    <h4 className={`text-xs font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Island Beaches</h4>
+                    <span className={`text-[10px] truncate block transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Koh Rong, Cambodia</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 group cursor-pointer">
-                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+                  <div className={`relative aspect-[4/3] rounded-xl overflow-hidden transition-colors duration-500 ${isDark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                     <Image src="https://picsum.photos/seed/mondulkiri/200/150" alt="Mondulkiri" fill className="object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-semibold text-gray-900 truncate">Rolling Hills</h4>
-                    <span className="text-[10px] text-gray-500 truncate block">Mondulkiri, Cambodia</span>
+                    <h4 className={`text-xs font-semibold truncate transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Rolling Hills</h4>
+                    <span className={`text-[10px] truncate block transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Mondulkiri, Cambodia</span>
                   </div>
                 </div>
               </div>
