@@ -45,42 +45,34 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col h-screen bg-[#F7F7F5] overflow-hidden font-sans">
       {/* Top Nav */}
-      <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100 z-10">
-        {/* Logo & Links */}
-        <div className="flex items-center gap-8">
+      <header className="bg-white border-b border-gray-100 z-10">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-4">
+          {/* Logo */}
           <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
             <Asterisk className="w-6 h-6 fill-current" />
             <span className="text-gray-900">Terria</span>
           </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-500">
-            <a href="#" className="text-gray-900 border-b-2 border-red-500 pb-1">Dashboard</a>
-            <a href="#" className="hover:text-gray-900 pb-1">Analytics</a>
-            <a href="#" className="hover:text-gray-900 pb-1">My Campaign</a>
-            <a href="#" className="hover:text-gray-900 pb-1">Resources</a>
-            <a href="#" className="hover:text-gray-900 pb-1">Discover</a>
-          </nav>
-        </div>
 
-        {/* Search & Actions */}
-        <div className="flex items-center gap-4">
-          <div className="relative hidden lg:block">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              className="pl-9 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 w-64"
-            />
+          {/* Refined Search */}
+          <div className="flex-1 max-w-2xl mx-8 hidden md:block">
+            <div className="relative flex items-center w-full bg-gray-100 rounded-full border border-transparent focus-within:bg-white focus-within:border-gray-200 focus-within:shadow-sm transition-all">
+              <Search className="w-4 h-4 absolute left-4 text-gray-400" />
+              <input 
+                type="text" 
+                placeholder="Search a vibe, location, or paste image link..." 
+                className="w-full pl-11 pr-12 py-2.5 bg-transparent text-sm focus:outline-none text-gray-900 placeholder-gray-500"
+              />
+              <button className="absolute right-2 p-1.5 bg-white rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-gray-600" />
+              </button>
+            </div>
           </div>
+
+          {/* Actions */}
           <div className="flex items-center gap-3">
-            <button className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors">
-              <Asterisk className="w-4 h-4" />
-            </button>
             <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors relative">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-            </button>
-            <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-              <Calendar className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
               <Image src="https://picsum.photos/seed/avatar/32/32" alt="Avatar" width={32} height={32} className="rounded-full" referrerPolicy="no-referrer" />
@@ -92,22 +84,6 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="flex-1 relative flex flex-col">
-        {/* Secondary Search Bar (Floating) */}
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 w-full max-w-2xl px-4">
-          <div className="bg-white rounded-full shadow-lg p-2 flex items-center justify-between border border-gray-100">
-            <div className="flex items-center gap-4 pl-4">
-              <Globe className="w-5 h-5 text-gray-400" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-gray-900">Search a vibe or paste image link...</span>
-                <span className="text-xs text-gray-500">Europe • Any week • Add guests</span>
-              </div>
-            </div>
-            <button className="p-3 bg-gray-50 hover:bg-gray-100 rounded-full border border-gray-200 transition-colors">
-              <SlidersHorizontal className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
-        </div>
-
         {/* Map Container */}
         <div className="flex-1 w-full relative">
           <Map
