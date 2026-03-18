@@ -3,40 +3,40 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Map, { Marker, Popup, MapRef } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Search, Bell, Calendar, Globe, SlidersHorizontal, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut, Sun, Moon, Monitor } from 'lucide-react';
+import { Search, Bell, Calendar, Globe, SlidersHorizontal, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut, Sun, Moon, Monitor, Bath, Maximize, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 // Mock data for map markers
 const markers = [
-  { id: 1, lat: 11.5515, lng: 104.9240, price: "$62.91", name: "BKK1 Luxury Condo", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.8, beds: 2, guests: 4, image: "https://picsum.photos/seed/villa1/400/300" },
-  { id: 2, lat: 11.5721, lng: 104.9254, price: "$32.79", name: "Riverside Studio", location: "Daun Penh, Phnom Penh", rating: 4.5, beds: 1, guests: 2, image: "https://picsum.photos/seed/cabin1/400/300" },
-  { id: 3, lat: 11.5404, lng: 104.9150, price: "$32.09", name: "Russian Market Loft", location: "Toul Tom Poung, Phnom Penh", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/forest1/400/300" },
-  { id: 4, lat: 11.5488, lng: 104.9350, price: "$116.64", name: "Bassac Lane Villa", location: "Tonle Bassac, Phnom Penh", rating: 4.2, beds: 1, guests: 2, image: "https://picsum.photos/seed/budget1/400/300" },
-  { id: 5, lat: 11.5714, lng: 104.8950, price: "$42.76", name: "TK Modern House", location: "Tuol Kork, Phnom Penh", rating: 4.0, beds: 2, guests: 4, image: "https://picsum.photos/seed/camp1/400/300" },
-  { id: 6, lat: 11.5950, lng: 104.9300, price: "$52.00", name: "Mekong View Apartment", location: "Chroy Changvar, Phnom Penh", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/river1/400/300" },
-  { id: 7, lat: 11.5500, lng: 104.9400, price: "$91.16", name: "Diamond Island Suite", location: "Koh Pich, Phnom Penh", rating: 5.0, beds: 4, guests: 8, image: "https://picsum.photos/seed/luxury1/400/300" },
-  { id: 8, lat: 11.5620, lng: 104.9160, price: "$20.84", name: "Olympic Stadium View", location: "7 Makara, Phnom Penh", rating: 4.3, beds: 1, guests: 2, image: "https://picsum.photos/seed/beach1/400/300" },
-  { id: 9, lat: 11.5580, lng: 104.9280, price: "$77.98", name: "Independence Monument Penthouse", location: "Daun Penh, Phnom Penh", rating: 4.9, beds: 3, guests: 6, image: "https://picsum.photos/seed/cliff1/400/300" },
-  { id: 10, lat: 11.5350, lng: 104.9200, price: "$39.69", name: "Cozy BKK3 Apartment", location: "Boeung Keng Kang 3, Phnom Penh", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/farm1/400/300" },
-  { id: 11, lat: 11.5680, lng: 104.9200, price: "$52.00", name: "Central Market Stay", location: "Daun Penh, Phnom Penh", rating: 4.8, beds: 2, guests: 4, image: "https://picsum.photos/seed/lake1/400/300" },
-  { id: 12, lat: 11.5800, lng: 104.9100, price: "$27.98", name: "Wat Phnom Retreat", location: "Daun Penh, Phnom Penh", rating: 4.9, beds: 1, guests: 2, image: "https://picsum.photos/seed/hill1/400/300" },
-  { id: 13, lat: 11.5450, lng: 104.9250, price: "$66.81", name: "BKK2 Modern Loft", location: "Boeung Keng Kang 2, Phnom Penh", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/loft1/400/300" },
-  { id: 14, lat: 11.5650, lng: 104.8850, price: "$35.44", name: "Sen Sok City Apartment", location: "Sen Sok, Phnom Penh", rating: 4.5, beds: 1, guests: 2, image: "https://picsum.photos/seed/apt1/400/300" },
-  { id: 15, lat: 11.5300, lng: 104.9300, price: "$43.48", name: "Chbar Ampov Home", location: "Chbar Ampov, Phnom Penh", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/suburb1/400/300" },
-  { id: 16, lat: 11.5850, lng: 104.9000, price: "$57.00", name: "Russey Keo Villa", location: "Russey Keo, Phnom Penh", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/garden1/400/300" },
-  { id: 17, lat: 13.3611, lng: 103.8595, price: "$98.03", name: "Angkor Wat View Resort", location: "Siem Reap, Cambodia", rating: 5.0, beds: 3, guests: 5, image: "https://picsum.photos/seed/ocean/400/300" },
-  { id: 18, lat: 11.5550, lng: 104.9100, price: "$18.51", name: "Backpacker Hostel", location: "7 Makara, Phnom Penh", rating: 4.1, beds: 1, guests: 1, image: "https://picsum.photos/seed/hostel1/400/300" },
-  { id: 19, lat: 10.6104, lng: 104.1815, price: "$41.31", name: "River Lodge", location: "Kampot, Cambodia", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/eco1/400/300" },
-  { id: 20, lat: 10.4820, lng: 104.3160, price: "$83.04", name: "Crab Market Villa", location: "Kep, Cambodia", rating: 4.4, beds: 2, guests: 4, image: "https://picsum.photos/seed/village1/400/300" },
-  { id: 21, lat: 11.5200, lng: 104.9400, price: "$26.59", name: "Mekong Island Stay", location: "Koh Dach, Phnom Penh", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/tent1/400/300" },
-  { id: 22, lat: 11.5750, lng: 104.9350, price: "$94.54", name: "Luxury Riverfront", location: "Chroy Changvar, Phnom Penh", rating: 4.9, beds: 2, guests: 4, image: "https://picsum.photos/seed/glamp1/400/300" },
-  { id: 23, lat: 11.5420, lng: 104.9220, price: "$70.82", name: "BKK1 Boutique Hotel", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/tea1/400/300" },
-  { id: 24, lat: 11.5600, lng: 104.9300, price: "$19.89", name: "Simple Room Riverside", location: "Daun Penh, Phnom Penh", rating: 4.2, beds: 1, guests: 2, image: "https://picsum.photos/seed/room1/400/300" },
-  { id: 25, lat: 11.5530, lng: 104.9260, price: "$54.56", name: "City Center Condo", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.6, beds: 2, guests: 4, image: "https://picsum.photos/seed/condo1/400/300" },
-  { id: 26, lat: 11.5480, lng: 104.9180, price: "$63.06", name: "TTP View Apt", location: "Toul Tom Poung, Phnom Penh", rating: 4.7, beds: 2, guests: 4, image: "https://picsum.photos/seed/apt2/400/300" },
-  { id: 27, lat: 11.5650, lng: 104.9150, price: "$49.82", name: "Quiet House", location: "7 Makara, Phnom Penh", rating: 4.5, beds: 2, guests: 4, image: "https://picsum.photos/seed/house1/400/300" },
-  { id: 28, lat: 11.5380, lng: 104.9280, price: "$59.30", name: "Traditional Villa", location: "Tonle Bassac, Phnom Penh", rating: 4.8, beds: 3, guests: 6, image: "https://picsum.photos/seed/villa2/400/300" },
-  { id: 29, lat: 11.5780, lng: 104.9220, price: "$15.34", name: "Budget Inn", location: "Daun Penh, Phnom Penh", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/inn1/400/300" },
+  { id: 1, lat: 11.5515, lng: 104.9240, price: "$62.91", name: "BKK1 Luxury Condo", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.8, beds: 2, baths: 2, sqft: 850, guests: 4, description: "Luxurious condo in the heart of BKK1 with stunning city views.", image: "https://picsum.photos/seed/villa1/400/300" },
+  { id: 2, lat: 11.5721, lng: 104.9254, price: "$32.79", name: "Riverside Studio", location: "Daun Penh, Phnom Penh", rating: 4.5, beds: 1, baths: 1, sqft: 450, guests: 2, description: "Cozy studio apartment just steps away from the vibrant riverside.", image: "https://picsum.photos/seed/cabin1/400/300" },
+  { id: 3, lat: 11.5404, lng: 104.9150, price: "$32.09", name: "Russian Market Loft", location: "Toul Tom Poung, Phnom Penh", rating: 4.9, beds: 3, baths: 2, sqft: 1200, guests: 6, description: "Spacious loft near the famous Russian Market, perfect for groups.", image: "https://picsum.photos/seed/forest1/400/300" },
+  { id: 4, lat: 11.5488, lng: 104.9350, price: "$116.64", name: "Bassac Lane Villa", location: "Tonle Bassac, Phnom Penh", rating: 4.2, beds: 1, baths: 1, sqft: 600, guests: 2, description: "Charming villa located in the trendy Bassac Lane area.", image: "https://picsum.photos/seed/budget1/400/300" },
+  { id: 5, lat: 11.5714, lng: 104.8950, price: "$42.76", name: "TK Modern House", location: "Tuol Kork, Phnom Penh", rating: 4.0, beds: 2, baths: 2, sqft: 950, guests: 4, description: "Modern house in the quiet residential neighborhood of Tuol Kork.", image: "https://picsum.photos/seed/camp1/400/300" },
+  { id: 6, lat: 11.5950, lng: 104.9300, price: "$52.00", name: "Mekong View Apartment", location: "Chroy Changvar, Phnom Penh", rating: 4.7, beds: 2, baths: 1, sqft: 800, guests: 4, description: "Beautiful apartment offering panoramic views of the Mekong River.", image: "https://picsum.photos/seed/river1/400/300" },
+  { id: 7, lat: 11.5500, lng: 104.9400, price: "$91.16", name: "Diamond Island Suite", location: "Koh Pich, Phnom Penh", rating: 5.0, beds: 4, baths: 3, sqft: 2000, guests: 8, description: "Exclusive suite on Diamond Island with premium amenities.", image: "https://picsum.photos/seed/luxury1/400/300" },
+  { id: 8, lat: 11.5620, lng: 104.9160, price: "$20.84", name: "Olympic Stadium View", location: "7 Makara, Phnom Penh", rating: 4.3, beds: 1, baths: 1, sqft: 400, guests: 2, description: "Affordable stay with great views near the Olympic Stadium.", image: "https://picsum.photos/seed/beach1/400/300" },
+  { id: 9, lat: 11.5580, lng: 104.9280, price: "$77.98", name: "Independence Monument Penthouse", location: "Daun Penh, Phnom Penh", rating: 4.9, beds: 3, baths: 3, sqft: 1800, guests: 6, description: "Stunning penthouse overlooking the iconic Independence Monument.", image: "https://picsum.photos/seed/cliff1/400/300" },
+  { id: 10, lat: 11.5350, lng: 104.9200, price: "$39.69", name: "Cozy BKK3 Apartment", location: "Boeung Keng Kang 3, Phnom Penh", rating: 4.6, beds: 2, baths: 1, sqft: 750, guests: 4, description: "Comfortable and quiet apartment in the BKK3 district.", image: "https://picsum.photos/seed/farm1/400/300" },
+  { id: 11, lat: 11.5680, lng: 104.9200, price: "$52.00", name: "Central Market Stay", location: "Daun Penh, Phnom Penh", rating: 4.8, beds: 2, baths: 2, sqft: 900, guests: 4, description: "Conveniently located near the historic Central Market.", image: "https://picsum.photos/seed/lake1/400/300" },
+  { id: 12, lat: 11.5800, lng: 104.9100, price: "$27.98", name: "Wat Phnom Retreat", location: "Daun Penh, Phnom Penh", rating: 4.9, beds: 1, baths: 1, sqft: 500, guests: 2, description: "Peaceful retreat near the famous Wat Phnom temple.", image: "https://picsum.photos/seed/hill1/400/300" },
+  { id: 13, lat: 11.5450, lng: 104.9250, price: "$66.81", name: "BKK2 Modern Loft", location: "Boeung Keng Kang 2, Phnom Penh", rating: 4.7, beds: 2, baths: 2, sqft: 1000, guests: 4, description: "Stylish modern loft in the popular BKK2 neighborhood.", image: "https://picsum.photos/seed/loft1/400/300" },
+  { id: 14, lat: 11.5650, lng: 104.8850, price: "$35.44", name: "Sen Sok City Apartment", location: "Sen Sok, Phnom Penh", rating: 4.5, beds: 1, baths: 1, sqft: 550, guests: 2, description: "New apartment in the rapidly developing Sen Sok area.", image: "https://picsum.photos/seed/apt1/400/300" },
+  { id: 15, lat: 11.5300, lng: 104.9300, price: "$43.48", name: "Chbar Ampov Home", location: "Chbar Ampov, Phnom Penh", rating: 4.6, beds: 2, baths: 1, sqft: 850, guests: 4, description: "Cozy home across the river in Chbar Ampov.", image: "https://picsum.photos/seed/suburb1/400/300" },
+  { id: 16, lat: 11.5850, lng: 104.9000, price: "$57.00", name: "Russey Keo Villa", location: "Russey Keo, Phnom Penh", rating: 4.8, beds: 3, baths: 2, sqft: 1500, guests: 6, description: "Spacious villa with a garden in Russey Keo.", image: "https://picsum.photos/seed/garden1/400/300" },
+  { id: 17, lat: 13.3611, lng: 103.8595, price: "$98.03", name: "Angkor Wat View Resort", location: "Siem Reap, Cambodia", rating: 5.0, beds: 3, baths: 3, sqft: 2200, guests: 5, description: "Luxury resort offering spectacular views of Angkor Wat.", image: "https://picsum.photos/seed/ocean/400/300" },
+  { id: 18, lat: 11.5550, lng: 104.9100, price: "$18.51", name: "Backpacker Hostel", location: "7 Makara, Phnom Penh", rating: 4.1, beds: 1, baths: 1, sqft: 200, guests: 1, description: "Budget-friendly hostel for solo travelers and backpackers.", image: "https://picsum.photos/seed/hostel1/400/300" },
+  { id: 19, lat: 10.6104, lng: 104.1815, price: "$41.31", name: "River Lodge", location: "Kampot, Cambodia", rating: 4.7, beds: 2, baths: 1, sqft: 700, guests: 4, description: "Relaxing lodge by the river in beautiful Kampot.", image: "https://picsum.photos/seed/eco1/400/300" },
+  { id: 20, lat: 10.4820, lng: 104.3160, price: "$83.04", name: "Crab Market Villa", location: "Kep, Cambodia", rating: 4.4, beds: 2, baths: 2, sqft: 1100, guests: 4, description: "Charming villa near the famous Kep Crab Market.", image: "https://picsum.photos/seed/village1/400/300" },
+  { id: 21, lat: 11.5200, lng: 104.9400, price: "$26.59", name: "Mekong Island Stay", location: "Koh Dach, Phnom Penh", rating: 4.0, beds: 1, baths: 1, sqft: 400, guests: 2, description: "Authentic homestay experience on Mekong Island.", image: "https://picsum.photos/seed/tent1/400/300" },
+  { id: 22, lat: 11.5750, lng: 104.9350, price: "$94.54", name: "Luxury Riverfront", location: "Chroy Changvar, Phnom Penh", rating: 4.9, beds: 2, baths: 2, sqft: 1300, guests: 4, description: "High-end riverfront apartment with premium facilities.", image: "https://picsum.photos/seed/glamp1/400/300" },
+  { id: 23, lat: 11.5420, lng: 104.9220, price: "$70.82", name: "BKK1 Boutique Hotel", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.8, beds: 3, baths: 2, sqft: 1400, guests: 6, description: "Elegant boutique hotel in the center of BKK1.", image: "https://picsum.photos/seed/tea1/400/300" },
+  { id: 24, lat: 11.5600, lng: 104.9300, price: "$19.89", name: "Simple Room Riverside", location: "Daun Penh, Phnom Penh", rating: 4.2, beds: 1, baths: 1, sqft: 300, guests: 2, description: "Basic and affordable room near the riverside.", image: "https://picsum.photos/seed/room1/400/300" },
+  { id: 25, lat: 11.5530, lng: 104.9260, price: "$54.56", name: "City Center Condo", location: "Boeung Keng Kang 1, Phnom Penh", rating: 4.6, beds: 2, baths: 1, sqft: 800, guests: 4, description: "Modern condo located right in the city center.", image: "https://picsum.photos/seed/condo1/400/300" },
+  { id: 26, lat: 11.5480, lng: 104.9180, price: "$63.06", name: "TTP View Apt", location: "Toul Tom Poung, Phnom Penh", rating: 4.7, beds: 2, baths: 2, sqft: 950, guests: 4, description: "Apartment with great views of the Toul Tom Poung area.", image: "https://picsum.photos/seed/apt2/400/300" },
+  { id: 27, lat: 11.5650, lng: 104.9150, price: "$49.82", name: "Quiet House", location: "7 Makara, Phnom Penh", rating: 4.5, beds: 2, baths: 1, sqft: 850, guests: 4, description: "A quiet and peaceful house in the bustling 7 Makara district.", image: "https://picsum.photos/seed/house1/400/300" },
+  { id: 28, lat: 11.5380, lng: 104.9280, price: "$59.30", name: "Traditional Villa", location: "Tonle Bassac, Phnom Penh", rating: 4.8, beds: 3, baths: 3, sqft: 1800, guests: 6, description: "Beautifully restored traditional villa in Tonle Bassac.", image: "https://picsum.photos/seed/villa2/400/300" },
+  { id: 29, lat: 11.5780, lng: 104.9220, price: "$15.34", name: "Budget Inn", location: "Daun Penh, Phnom Penh", rating: 4.0, beds: 1, baths: 1, sqft: 250, guests: 2, description: "Simple and clean budget accommodation in Daun Penh.", image: "https://picsum.photos/seed/inn1/400/300" },
 ];
 
 const mapStyles = {
@@ -51,6 +51,7 @@ export default function Dashboard() {
   const [isMapLoading, setIsMapLoading] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
@@ -209,6 +210,7 @@ export default function Dashboard() {
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedMarker(marker);
+                    setCurrentImageIndex(0);
                     setIsMapLoading(true);
                     mapRef.current?.flyTo({
                       center: [marker.lng, marker.lat],
@@ -241,8 +243,28 @@ export default function Dashboard() {
                 maxWidth="300px"
               >
                 <div className={`rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] overflow-hidden w-64 border transition-colors duration-500 ${isDark ? 'bg-gray-900 border-white/10' : 'bg-white border-black/5'}`}>
-                  <div className="relative h-40 w-full">
+                  <div className="relative h-48 w-full group">
                     <Image src={selectedMarker.image} alt={selectedMarker.name} fill className="object-cover" referrerPolicy="no-referrer" />
+                    
+                    {/* Carousel Controls */}
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === 0 ? 2 : prev - 1); }}
+                      className={`absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10 ${isDark ? 'bg-gray-900/80 hover:bg-gray-900 text-white' : 'bg-white/80 hover:bg-white text-gray-900'}`}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === 2 ? 0 : prev + 1); }}
+                      className={`absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10 ${isDark ? 'bg-gray-900/80 hover:bg-gray-900 text-white' : 'bg-white/80 hover:bg-white text-gray-900'}`}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                      {[0, 1, 2].map(idx => (
+                        <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-colors ${currentImageIndex === idx ? 'bg-white' : 'bg-white/50'}`} />
+                      ))}
+                    </div>
+
                     <button 
                       className={`absolute top-3 right-3 p-1.5 backdrop-blur-sm rounded-full transition-colors z-10 ${isDark ? 'bg-gray-900/80 hover:bg-gray-900 text-gray-300' : 'bg-white/80 hover:bg-white text-gray-700'}`}
                       onClick={(e) => {
@@ -255,22 +277,33 @@ export default function Dashboard() {
                     <button className={`absolute top-3 right-10 p-1.5 backdrop-blur-sm rounded-full transition-colors z-10 ${isDark ? 'bg-gray-900/80 hover:bg-gray-900 text-gray-300' : 'bg-white/80 hover:bg-white text-gray-700'}`}>
                       <Heart className="w-4 h-4" />
                     </button>
-                    <div className="absolute bottom-3 left-3 flex gap-2 z-10">
-                      <div className={`flex items-center gap-1 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium tabular-nums transition-colors duration-500 ${isDark ? 'bg-gray-900/90 text-gray-300' : 'bg-white/90 text-gray-700'}`}>
-                        <Users className="w-3 h-3" /> {selectedMarker.guests}
-                      </div>
-                      <div className={`flex items-center gap-1 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium tabular-nums transition-colors duration-500 ${isDark ? 'bg-gray-900/90 text-gray-300' : 'bg-white/90 text-gray-700'}`}>
-                        <BedDouble className="w-3 h-3" /> {selectedMarker.beds}
-                      </div>
-                      <div className={`flex items-center gap-1 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium tabular-nums transition-colors duration-500 ${isDark ? 'bg-gray-900/90 text-gray-300' : 'bg-white/90 text-gray-700'}`}>
-                        <Star className="w-3 h-3" /> {selectedMarker.rating}
-                      </div>
-                    </div>
                   </div>
                   <div className="p-4">
-                    <h3 className={`font-semibold text-balance transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>{selectedMarker.name}</h3>
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className={`font-semibold text-balance transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>{selectedMarker.name}</h3>
+                      <div className={`flex items-center gap-1 text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        <Star className="w-3.5 h-3.5 fill-current text-yellow-500" /> {selectedMarker.rating}
+                      </div>
+                    </div>
                     <p className={`text-sm truncate transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{selectedMarker.location}</p>
-                    <div className="mt-2 flex items-baseline gap-1">
+                    
+                    <div className={`grid grid-cols-2 gap-y-2 gap-x-4 mt-3 py-3 border-y transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/5'}`}>
+                      <div className={`flex items-center gap-2 text-xs transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                        <Users className="w-3.5 h-3.5" /> {selectedMarker.guests} Guests
+                      </div>
+                      <div className={`flex items-center gap-2 text-xs transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                        <BedDouble className="w-3.5 h-3.5" /> {selectedMarker.beds} Beds
+                      </div>
+                      <div className={`flex items-center gap-2 text-xs transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                        <Bath className="w-3.5 h-3.5" /> {selectedMarker.baths} Baths
+                      </div>
+                      <div className={`flex items-center gap-2 text-xs transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                        <Maximize className="w-3.5 h-3.5" /> {selectedMarker.sqft} sqft
+                      </div>
+                    </div>
+
+                    <p className={`text-xs mt-3 line-clamp-2 transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{selectedMarker.description}</p>
+                    <div className="mt-3 flex items-baseline gap-1">
                       <span className={`font-bold tabular-nums transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>{selectedMarker.price}</span>
                       <span className={`text-sm transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>/ night</span>
                     </div>
