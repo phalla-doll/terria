@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Map, { Marker, Popup, MapRef } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut, Sun, Moon, Monitor } from 'lucide-react';
+import { Search, Bell, Calendar, Globe, SlidersHorizontal, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut, Sun, Moon, Monitor } from 'lucide-react';
 import Image from 'next/image';
 
 // Mock data for map markers
@@ -39,16 +39,14 @@ const markers = [
   { id: 29, lat: 11.5780, lng: 104.9220, price: "$15.34", name: "Budget Inn", location: "Daun Penh, Phnom Penh", rating: 4.0, beds: 1, guests: 2, image: "https://picsum.photos/seed/inn1/400/300" },
 ];
 
-const mapStyles = [
-  { id: 'voyager', name: 'Streets', url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json' },
-  { id: 'positron', name: 'Light', url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json' },
-  { id: 'dark-matter', name: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' }
-];
+const mapStyles = {
+  light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+};
 
 export default function Dashboard() {
   const [selectedMarker, setSelectedMarker] = useState<typeof markers[0] | null>(null);
-  const [mapStyle, setMapStyle] = useState(mapStyles[0].url);
-  const [showLayerMenu, setShowLayerMenu] = useState(false);
+  const [mapStyle, setMapStyle] = useState(mapStyles.light);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isMapLoading, setIsMapLoading] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
@@ -68,7 +66,7 @@ export default function Dashboard() {
   const isDark = resolvedTheme === 'dark';
 
   useEffect(() => {
-    setMapStyle(isDark ? mapStyles[2].url : mapStyles[0].url);
+    setMapStyle(isDark ? mapStyles.dark : mapStyles.light);
   }, [isDark]);
 
   const handleZoomIn = () => {
@@ -284,40 +282,6 @@ export default function Dashboard() {
 
           {/* Map Controls (Right) */}
           <div className="absolute top-24 right-6 flex flex-col gap-2 z-10">
-            <div className="relative">
-              <button 
-                onClick={() => setShowLayerMenu(!showLayerMenu)}
-                className={`p-2.5 rounded-xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgb(0,0,0,0.2)] border transition-colors duration-500 ${
-                  isDark 
-                    ? (showLayerMenu ? 'bg-gray-800 border-white/10' : 'bg-gray-900 border-white/5 hover:bg-gray-800') 
-                    : (showLayerMenu ? 'bg-gray-50 border-black/10' : 'bg-white border-black/5 hover:bg-gray-50')
-                }`}
-              >
-                <Layers className={`w-5 h-5 transition-transform duration-300 ${showLayerMenu ? 'scale-110' : ''} ${isDark ? 'text-gray-300' : 'text-gray-700'}`} />
-              </button>
-              
-              {showLayerMenu && (
-                <div className={`absolute top-0 right-14 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border overflow-hidden w-32 z-20 transition-colors duration-500 ${isDark ? 'bg-gray-900 border-white/10' : 'bg-white border-black/5'}`}>
-                  {mapStyles.map((style) => (
-                    <button
-                      key={style.id}
-                      onClick={() => {
-                        setIsMapLoading(true);
-                        setMapStyle(style.url);
-                        setShowLayerMenu(false);
-                      }}
-                      className={`w-full text-left px-4 py-2.5 text-sm transition-colors duration-500 ${
-                        mapStyle === style.url 
-                          ? (isDark ? 'font-semibold text-red-400 bg-red-900/30' : 'font-semibold text-red-500 bg-red-50/50') 
-                          : (isDark ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-50')
-                      }`}
-                    >
-                      {style.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
             <div className={`flex flex-col rounded-xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgb(0,0,0,0.2)] border overflow-hidden mt-2 transition-colors duration-500 ${isDark ? 'bg-gray-900 border-white/5' : 'bg-white border-black/5'}`}>
               <button 
                 onClick={handleZoomIn}
