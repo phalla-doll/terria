@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Map, { Marker, Popup, MapRef } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut } from 'lucide-react';
+import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut, Sun, Moon, Monitor } from 'lucide-react';
 import Image from 'next/image';
 
 // Mock data for map markers
@@ -51,9 +51,25 @@ export default function Dashboard() {
   const [showLayerMenu, setShowLayerMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isMapLoading, setIsMapLoading] = useState(true);
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
   const mapRef = useRef<MapRef>(null);
 
-  const isDark = mapStyle === mapStyles[2].url;
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+    
+    const handler = (e: MediaQueryListEvent) => setSystemTheme(e.matches ? 'dark' : 'light');
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
+  const isDark = resolvedTheme === 'dark';
+
+  useEffect(() => {
+    setMapStyle(isDark ? mapStyles[2].url : mapStyles[0].url);
+  }, [isDark]);
 
   const handleZoomIn = () => {
     setIsMapLoading(true);
@@ -108,8 +124,8 @@ export default function Dashboard() {
               {showProfileMenu && (
                 <div className={`absolute top-full right-0 mt-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border overflow-hidden w-48 z-50 transition-colors duration-500 ${isDark ? 'bg-gray-900 border-white/10' : 'bg-white border-black/5'}`}>
                   <div className={`px-4 py-3 border-b transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/5'}`}>
-                    <p className={`text-sm font-medium transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Alfikri Djati</p>
-                    <p className={`text-xs truncate transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>alfikri@example.com</p>
+                    <p className={`text-sm font-medium transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Mantha</p>
+                    <p className={`text-xs truncate transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>mantha@dev.com</p>
                   </div>
                   <div className="py-1">
                     <button className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-300 ${isDark ? 'text-gray-300 hover:bg-gray-800 hover:text-white' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}`}>
@@ -124,6 +140,25 @@ export default function Dashboard() {
                       <Settings className="w-4 h-4" />
                       Settings
                     </button>
+                  </div>
+                  <div className={`py-1 border-t transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/5'}`}>
+                    <div className={`px-4 py-2 flex items-center justify-between transition-colors duration-300 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                      <span className="text-sm flex items-center gap-2">
+                        {theme === 'light' ? <Sun className="w-4 h-4" /> : theme === 'dark' ? <Moon className="w-4 h-4" /> : <Monitor className="w-4 h-4" />}
+                        Theme
+                      </span>
+                      <div className={`flex items-center rounded-full p-0.5 border ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-100 border-gray-200'}`}>
+                        <button onClick={() => setTheme('light')} className={`p-1.5 rounded-full transition-colors ${theme === 'light' ? (isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900 shadow-sm') : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}>
+                          <Sun className="w-3.5 h-3.5" />
+                        </button>
+                        <button onClick={() => setTheme('system')} className={`p-1.5 rounded-full transition-colors ${theme === 'system' ? (isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900 shadow-sm') : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}>
+                          <Monitor className="w-3.5 h-3.5" />
+                        </button>
+                        <button onClick={() => setTheme('dark')} className={`p-1.5 rounded-full transition-colors ${theme === 'dark' ? (isDark ? 'bg-gray-700 text-white' : 'bg-white text-gray-900 shadow-sm') : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}>
+                          <Moon className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className={`py-1 border-t transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/5'}`}>
                     <button className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-300 ${isDark ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'}`}>
