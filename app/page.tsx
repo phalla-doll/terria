@@ -84,7 +84,7 @@ export default function Dashboard() {
     <div className={`flex flex-col h-screen overflow-hidden font-sans antialiased transition-colors duration-500 ${isDark ? 'bg-gray-900' : 'bg-[#F7F7F5]'}`}>
       {/* Top Nav */}
       <header className="absolute top-6 left-0 w-full z-20 px-6 pointer-events-none">
-        <div className={`max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-1.5 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] rounded-full pointer-events-auto border transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border-white/5' : 'bg-white/95 border-white/20'}`}>
+        <div className={`max-w-5xl mx-auto w-full flex items-center justify-between px-6 py-1.5 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] rounded-full pointer-events-auto border transition-colors duration-500 ${isDark ? 'bg-gray-900/90 border-white/5' : 'bg-white/95 border-white/20'}`}>
           {/* Logo */}
           <div className="flex items-center gap-2 text-red-500 font-bold text-xl">
             <Asterisk className="w-6 h-6 fill-current" />
