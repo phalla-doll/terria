@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Map, { Marker, Popup, MapRef } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2 } from 'lucide-react';
+import { Search, Bell, Calendar, Globe, SlidersHorizontal, Layers, Plus, Minus, Heart, X, Star, Users, BedDouble, Asterisk, Loader2, User, Settings, LogOut } from 'lucide-react';
 import Image from 'next/image';
 
 // Mock data for map markers
@@ -49,6 +49,7 @@ export default function Dashboard() {
   const [selectedMarker, setSelectedMarker] = useState<typeof markers[0] | null>(null);
   const [mapStyle, setMapStyle] = useState(mapStyles[0].url);
   const [showLayerMenu, setShowLayerMenu] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isMapLoading, setIsMapLoading] = useState(true);
   const mapRef = useRef<MapRef>(null);
 
@@ -96,9 +97,42 @@ export default function Dashboard() {
               <Bell className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" />
               <span className={`absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 ${isDark ? 'border-gray-900' : 'border-white'}`}></span>
             </button>
-            <div className={`flex items-center gap-2 pl-2 border-l transition-colors duration-500 ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
-              <Image src="https://picsum.photos/seed/avatar/32/32" alt="Avatar" width={32} height={32} className="rounded-full" referrerPolicy="no-referrer" />
-              <span className={`text-sm font-medium hidden sm:block transition-colors duration-500 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>Alfikri Djati</span>
+            <div className={`relative flex items-center pl-2 border-l transition-colors duration-500 ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+              <button 
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="outline-none rounded-full focus:ring-2 focus:ring-red-500 transition-all"
+              >
+                <Image src="https://picsum.photos/seed/avatar/32/32" alt="Avatar" width={32} height={32} className="rounded-full hover:opacity-80 transition-opacity" referrerPolicy="no-referrer" />
+              </button>
+              
+              {showProfileMenu && (
+                <div className={`absolute top-full right-0 mt-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border overflow-hidden w-48 z-50 transition-colors duration-500 ${isDark ? 'bg-gray-900 border-white/10' : 'bg-white border-black/5'}`}>
+                  <div className={`px-4 py-3 border-b transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/5'}`}>
+                    <p className={`text-sm font-medium transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>Alfikri Djati</p>
+                    <p className={`text-xs truncate transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>alfikri@example.com</p>
+                  </div>
+                  <div className="py-1">
+                    <button className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-300 ${isDark ? 'text-gray-300 hover:bg-gray-800 hover:text-white' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}`}>
+                      <User className="w-4 h-4" />
+                      Profile
+                    </button>
+                    <button className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-300 ${isDark ? 'text-gray-300 hover:bg-gray-800 hover:text-white' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}`}>
+                      <Heart className="w-4 h-4" />
+                      Saved
+                    </button>
+                    <button className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-300 ${isDark ? 'text-gray-300 hover:bg-gray-800 hover:text-white' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'}`}>
+                      <Settings className="w-4 h-4" />
+                      Settings
+                    </button>
+                  </div>
+                  <div className={`py-1 border-t transition-colors duration-500 ${isDark ? 'border-white/10' : 'border-black/5'}`}>
+                    <button className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-300 ${isDark ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-50'}`}>
+                      <LogOut className="w-4 h-4" />
+                      Sign out
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
